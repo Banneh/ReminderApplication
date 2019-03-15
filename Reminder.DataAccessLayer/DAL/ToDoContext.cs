@@ -11,9 +11,14 @@ namespace Reminder.DataAccessLayer.DAL
         public DbSet<ToDo> ToDos { get; set; }
         public DbSet<Group> Groups { get; set; }
 
+        public ToDoContext(DbContextOptions<ToDoContext> options) : base(options)
+        {
+
+        }
+
         protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
         {
-            optionsBuilder.UseSqlServer(@"Server=.\SQLEXPRESS;Database=TaskListDb;Trusted_Connection=True");
+            
         }
     }
 }

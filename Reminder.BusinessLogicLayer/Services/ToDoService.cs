@@ -7,12 +7,18 @@ using Reminder.DataAccessLayer.DAL;
 
 namespace Reminder.BusinessLogicLayer.Services
 {
-    internal class ToDoService : IToDoService
+    public class ToDoService : IToDoService
     {
-        public IDataProvider DataProvider { get; set; }
-        public IQueryable<ToDo> Get()
+        public IUnitOfWork UnitOfWork { get; set; }
+
+        public ToDoService(IUnitOfWork unitOfWork)
         {
-            throw new NotImplementedException();
+            UnitOfWork = unitOfWork;
+        }
+
+        public IEnumerable<ToDo> Get()
+        {
+            return UnitOfWork.ToDos.GetAll();
         }
 
         public ToDo GetById(long id)
@@ -20,7 +26,7 @@ namespace Reminder.BusinessLogicLayer.Services
             throw new NotImplementedException();
         }
 
-        public IQueryable<ToDo> GetByGroup(Group @group)
+        public IEnumerable<ToDo> GetByGroup(Group @group)
         {
             throw new NotImplementedException();
         }

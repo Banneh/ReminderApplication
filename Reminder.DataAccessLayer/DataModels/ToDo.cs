@@ -7,9 +7,10 @@ namespace Reminder.DataAccessLayer.DataModels
 {
     public class ToDo
     {
+        [Key]
         public long ToDoId { get; set; }
+        [Required(AllowEmptyStrings = false)]
         public string Name { get; set; }
-        [Required(AllowEmptyStrings = true)]
         public string Description { get; set; }
         public DateTime? Created { get; set; }
         public DateTime? DueDate { get; set; }

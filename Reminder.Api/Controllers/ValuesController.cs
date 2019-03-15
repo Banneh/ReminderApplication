@@ -3,6 +3,8 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Mvc;
+using Reminder.BusinessLogicLayer.Services;
+using Reminder.DataAccessLayer.DataModels;
 
 namespace Reminder.Api.Controllers
 {
@@ -10,11 +12,17 @@ namespace Reminder.Api.Controllers
     [ApiController]
     public class ValuesController : ControllerBase
     {
+        private readonly IToDoService _toDoService;
+
+        public ValuesController(IToDoService toDoService)
+        {
+            _toDoService = toDoService;
+        }
         // GET api/values
         [HttpGet]
-        public ActionResult<IEnumerable<string>> Get()
+        public ActionResult<IEnumerable<ToDo>> Get()
         {
-            return new string[] { "value1", "value2" };
+            return Ok(_toDoService.Get());
         }
 
         // GET api/values/5

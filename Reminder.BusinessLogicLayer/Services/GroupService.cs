@@ -4,7 +4,7 @@ using System.Text;
 
 namespace Reminder.BusinessLogicLayer.Services
 {
-    internal class GroupService : IGroupService
+    public class GroupService : IGroupService
     {
     }
 }
