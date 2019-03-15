@@ -29,7 +29,8 @@ namespace Reminder.Api.Controllers
         [HttpGet("{id}")]
         public IActionResult Get(long id)
         {
-            
+
+
             ToDo toDo = _toDoService.GetById(id);
 
             if (toDo == null)
@@ -39,6 +40,20 @@ namespace Reminder.Api.Controllers
 
             return Ok(toDo);
 
+        }
+
+        
+        [HttpGet("Group/{groupid}")]
+        public IActionResult GetByGroup(long groupId)
+        {
+            IEnumerable<ToDo> toDosByGroup = _toDoService.GetByGroup(groupId);
+
+            if (toDosByGroup == null)
+            {
+                return NotFound();
+            }
+
+            return Ok(toDosByGroup);
         }
 
         // POST api/values

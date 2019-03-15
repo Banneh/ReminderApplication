@@ -13,7 +13,7 @@ namespace Reminder.BusinessLogicLayer.Services
         IUnitOfWork UnitOfWork { get; set; }
         IEnumerable<ToDo> Get();
         ToDo GetById(long id);
-        IEnumerable<ToDo> GetByGroup(Group group);
+        IEnumerable<ToDo> GetByGroup(long groupId);
         long Add(ToDo toDo);
         long Update(long id, ToDo toDo);
         void Delete(ToDo toDo);

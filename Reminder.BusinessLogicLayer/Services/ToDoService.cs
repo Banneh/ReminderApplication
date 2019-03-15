@@ -22,18 +22,15 @@ namespace Reminder.BusinessLogicLayer.Services
         public ToDo GetById(long id)
         {
             ToDo toReturn = UnitOfWork.ToDos
-                .Find(x => x.ToDoId.Equals(id))
-                .FirstOrDefault();
+                .Get(id);
 
             return toReturn;
         }
 
-        public IEnumerable<ToDo> GetByGroup(Group group)
+        public IEnumerable<ToDo> GetByGroup(long groupId)
         {
-            IEnumerable<ToDo> toReturn = 
-                UnitOfWork.ToDos
-                .Find(x => x.Group.Equals(group))
-                .AsEnumerable();
+            IEnumerable<ToDo> toReturn = UnitOfWork.ToDos
+                .GetAssignedToGroup(groupId);
 
             return toReturn;
         }
