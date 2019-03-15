@@ -6,7 +6,7 @@ using Reminder.DataAccessLayer.DataModels;
 
 namespace Reminder.DataAccessLayer.DAL
 {
-    public class ToDoContext : DbContext, IDataProvider
+    public class ToDoContext : DbContext
     {
         public DbSet<ToDo> ToDos { get; set; }
         public DbSet<Group> Groups { get; set; }

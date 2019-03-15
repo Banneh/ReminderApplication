@@ -15,8 +15,7 @@ namespace Reminder.BusinessLogicLayer.Services
         ToDo GetById(long id);
         IEnumerable<ToDo> GetByGroup(Group group);
         long Add(ToDo toDo);
-        long Update(ToDo toDo);
+        long Update(long id, ToDo toDo);
         void Delete(ToDo toDo);
-        void DeleteById(long id);
     }
 }

@@ -34,6 +34,11 @@ namespace Reminder.DataAccessLayer.Repositories
             return Context.Set<TEntity>().ToList();
         }
 
+        public void Update(TEntity entity)
+        {
+            Context.Set<TEntity>().Update(entity);
+        }
+
         public void Remove(TEntity entity)
         {
             Context.Set<TEntity>().Remove(entity);
