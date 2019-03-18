@@ -43,7 +43,7 @@ namespace Reminder.Api.Controllers
         }
 
         
-        [HttpGet("Group/{groupid}")]
+        [HttpGet("group/{groupid}")]
         public IActionResult GetByGroup(long groupId)
         {
             IEnumerable<ToDo> toDosByGroup = _toDoService.GetByGroup(groupId);

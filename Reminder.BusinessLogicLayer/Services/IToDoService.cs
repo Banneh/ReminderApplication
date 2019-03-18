@@ -8,14 +8,8 @@ using Reminder.DataAccessLayer.DAL;
 
 namespace Reminder.BusinessLogicLayer.Services
 {
-    public interface IToDoService
+    public interface IToDoService : IBaseService<ToDo>
     {
-        IUnitOfWork UnitOfWork { get;}
-        IEnumerable<ToDo> Get();
-        ToDo GetById(long id);
         IEnumerable<ToDo> GetByGroup(long groupId);
-        ToDo Add(ToDo toDo);
-        ToDo Update(long id, ToDo toDo);
-        void Delete(ToDo toDo);
     }
 }

@@ -1,5 +1,5 @@
-﻿using System.Collections.Generic;
-using System.Linq;
+﻿using System;
+using System.Collections.Generic;
 using Reminder.DataAccessLayer.DataModels;
 using Reminder.DataAccessLayer.DAL;
 
@@ -35,17 +35,18 @@ namespace Reminder.BusinessLogicLayer.Services
             return toReturn;
         }
 
-        public ToDo Add(ToDo toDo)
+        public void Add(ToDo toDo)
         {
+            toDo.Created = DateTime.UtcNow;
+            toDo.IsDone = false;
+
             UnitOfWork.ToDos
                 .Add(toDo);
 
             UnitOfWork.Complete();
-
-            return toDo;
         }
 
-        public ToDo Update(long id, ToDo toDo)
+        public void Update(long id, ToDo toDo)
         {
             ToDo toUpdate = GetById(id);
 
@@ -60,8 +61,6 @@ namespace Reminder.BusinessLogicLayer.Services
                 .Update(toUpdate);
 
             UnitOfWork.Complete();
-
-            return toUpdate;
         }
 
         public void Delete(ToDo toDo)
