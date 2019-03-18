@@ -12,7 +12,7 @@ namespace Reminder.BusinessLogicLayer.Services
             UnitOfWork = unitOfWork;
         }
 
-        public IUnitOfWork UnitOfWork { get; set; }
+        public IUnitOfWork UnitOfWork { get; }
 
         public IEnumerable<ToDo> Get()
         {
