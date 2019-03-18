@@ -10,13 +10,12 @@ namespace Reminder.BusinessLogicLayer.Services
 {
     public interface IToDoService
     {
-        IUnitOfWork UnitOfWork { get; set; }
+        IUnitOfWork UnitOfWork { get;}
         IEnumerable<ToDo> Get();
         ToDo GetById(long id);
-        IEnumerable<ToDo> GetByGroup(Group group);
-        long Add(ToDo toDo);
-        long Update(ToDo toDo);
+        IEnumerable<ToDo> GetByGroup(long groupId);
+        ToDo Add(ToDo toDo);
+        ToDo Update(long id, ToDo toDo);
         void Delete(ToDo toDo);
-        void DeleteById(long id);
     }
 }

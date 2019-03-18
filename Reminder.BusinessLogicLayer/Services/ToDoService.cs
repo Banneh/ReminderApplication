@@ -1,7 +1,5 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using System.Linq;
-using System.Text;
 using Reminder.DataAccessLayer.DataModels;
 using Reminder.DataAccessLayer.DAL;
 
@@ -9,12 +7,12 @@ namespace Reminder.BusinessLogicLayer.Services
 {
     public class ToDoService : IToDoService
     {
-        public IUnitOfWork UnitOfWork { get; set; }
-
         public ToDoService(IUnitOfWork unitOfWork)
         {
             UnitOfWork = unitOfWork;
         }
+
+        public IUnitOfWork UnitOfWork { get; }
 
         public IEnumerable<ToDo> Get()
         {
@@ -23,32 +21,53 @@ namespace Reminder.BusinessLogicLayer.Services
 
         public ToDo GetById(long id)
         {
-            throw new NotImplementedException();
+            ToDo toReturn = UnitOfWork.ToDos
+                .Get(id);
+
+            return toReturn;
         }
 
-        public IEnumerable<ToDo> GetByGroup(Group @group)
+        public IEnumerable<ToDo> GetByGroup(long groupId)
         {
-            throw new NotImplementedException();
+            IEnumerable<ToDo> toReturn = UnitOfWork.ToDos
+                .GetAssignedToGroup(groupId);
+
+            return toReturn;
         }
 
-        public long Add(ToDo toDo)
+        public ToDo Add(ToDo toDo)
         {
-            throw new NotImplementedException();
+            UnitOfWork.ToDos
+                .Add(toDo);
+
+            UnitOfWork.Complete();
+
+            return toDo;
         }
 
-        public long Update(ToDo toDo)
+        public ToDo Update(long id, ToDo toDo)
         {
-            throw new NotImplementedException();
+            ToDo toUpdate = GetById(id);
+
+            toUpdate.Description = toDo.Description;
+            toUpdate.Group = toDo.Group;
+            toUpdate.IsDone = toDo.IsDone;
+            toUpdate.DueDate = toDo.DueDate;
+            toUpdate.Name = toDo.Name;
+
+
+            UnitOfWork.ToDos
+                .Update(toUpdate);
+
+            UnitOfWork.Complete();
+
+            return toUpdate;
         }
 
         public void Delete(ToDo toDo)
         {
-            throw new NotImplementedException();
-        }
-
-        public void DeleteById(long id)
-        {
-            throw new NotImplementedException();
+            UnitOfWork.ToDos.Remove(toDo);
+            UnitOfWork.Complete();
         }
     }
 }
