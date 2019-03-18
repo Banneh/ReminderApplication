@@ -10,11 +10,11 @@ namespace Reminder.Api.Controllers
 {
     [Route("api/[controller]")]
     [ApiController]
-    public class ToDoController : ControllerBase
+    public class ToDosController : ControllerBase
     {
         private readonly IToDoService _toDoService;
 
-        public ToDoController(IToDoService toDoService)
+        public ToDosController(IToDoService toDoService)
         {
             _toDoService = toDoService;
         }
@@ -64,7 +64,7 @@ namespace Reminder.Api.Controllers
                 return BadRequest();
 
             _toDoService.Add(toDo);
-            return Ok(toDo);
+            return Ok(toDo.ToDoId);
         }
 
         // PUT api/values/5
@@ -75,7 +75,7 @@ namespace Reminder.Api.Controllers
                 return BadRequest();
 
             _toDoService.Update(id, value);
-            return Ok();
+            return Ok(value.ToDoId);
         }
 
         

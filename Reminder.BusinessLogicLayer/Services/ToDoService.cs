@@ -35,15 +35,17 @@ namespace Reminder.BusinessLogicLayer.Services
             return toReturn;
         }
 
-        public long Add(ToDo toDo)
+        public ToDo Add(ToDo toDo)
         {
             UnitOfWork.ToDos
                 .Add(toDo);
 
-            return toDo.ToDoId;
+            UnitOfWork.Complete();
+
+            return toDo;
         }
 
-        public long Update(long id, ToDo toDo)
+        public ToDo Update(long id, ToDo toDo)
         {
             ToDo toUpdate = GetById(id);
 
@@ -59,7 +61,7 @@ namespace Reminder.BusinessLogicLayer.Services
 
             UnitOfWork.Complete();
 
-            return toUpdate.ToDoId;
+            return toUpdate;
         }
 
         public void Delete(ToDo toDo)
