@@ -9,6 +9,7 @@ namespace Reminder.DataAccessLayer.DAL
     {
         IToDoRepository ToDos { get; }
         IGroupRepository Groups { get; }
+        IUserRepository Users { get; }
         int Complete();
     }
 }

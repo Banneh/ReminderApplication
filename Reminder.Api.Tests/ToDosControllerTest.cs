@@ -23,8 +23,7 @@ namespace Reminder.Api.Tests
 
             var mockRepo = new Mock<IToDoService>();
 
-            mockRepo.Setup(repo => repo.Add(objectToAdd))
-                .Returns(objectToAdd);
+            //mockRepo.Setup(repo => repo.Add(objectToAdd)).Returns(objectToAdd);
             
             var mock = new Mock<IToDoService>();
 

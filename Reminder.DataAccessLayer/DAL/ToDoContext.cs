@@ -10,6 +10,7 @@ namespace Reminder.DataAccessLayer.DAL
     {
         public DbSet<ToDo> ToDos { get; set; }
         public DbSet<Group> Groups { get; set; }
+        public DbSet<User> Users { get; set; }
 
         public ToDoContext(DbContextOptions<ToDoContext> options) : base(options)
         {

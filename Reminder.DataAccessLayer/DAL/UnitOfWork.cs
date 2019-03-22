@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Text;
+using Reminder.DataAccessLayer.DataModels;
 using Reminder.DataAccessLayer.Repositories;
 
 namespace Reminder.DataAccessLayer.DAL
@@ -14,14 +15,16 @@ namespace Reminder.DataAccessLayer.DAL
             _context = context;
             ToDos = new ToDoRepository(context);
             Groups = new GroupRepository(context);
+            Users = new UserRepository(context);
         }
         public void Dispose()
         {
             _context.Dispose();
         }
 
-        public IToDoRepository ToDos { get; private set; }
-        public IGroupRepository Groups { get; private set; }
+        public IToDoRepository ToDos { get;  }
+        public IGroupRepository Groups { get; }
+        public IUserRepository Users { get; }
         public int Complete()
         {
             return _context.SaveChanges();
