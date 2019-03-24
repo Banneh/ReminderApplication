@@ -18,12 +18,12 @@ namespace Reminder.Api.Controllers
 {
     [Authorize]
     [ApiController]
-    [Route("[controller]")]
+    [Route("api/[controller]")]
     public class UsersController : ControllerBase
     {
         private IUserService _userService;
         private IMapper _mapper;
-        private readonly string secret = "TEST";
+        private readonly string secret = "TEasdasdasdsadasdsafhsdfgaffdfaerfaST";
 
         public UsersController(IUserService userService, IMapper mapper)
         {
@@ -80,6 +80,24 @@ namespace Reminder.Api.Controllers
                 // return error message if there was an exception
                 return BadRequest(new { message = ex.Message });
             }
+        }
+
+        [HttpGet("{id}")]
+        public IActionResult GetById(long id)
+        {
+            User user = _userService.GetById(id);
+
+            UserDto userToReturn = _mapper.Map<UserDto>(user);
+
+            return Ok(userToReturn);
+        }
+
+        [HttpDelete("{id}")]
+        public IActionResult Delete(long id)
+        {
+            _userService.Delete(id);
+
+            return Ok();
         }
     }
 }

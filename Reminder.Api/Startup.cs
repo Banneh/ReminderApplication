@@ -16,6 +16,7 @@ using Microsoft.Extensions.Options;
 using Reminder.BusinessLogicLayer.Services;
 using AutoMapper;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
+using Microsoft.AspNetCore.Mvc.Authorization;
 using Microsoft.IdentityModel.Tokens;
 using Reminder.DataAccessLayer.DAL;
 
@@ -38,7 +39,6 @@ namespace Reminder.Api
             var connectionStringsSection = Configuration.GetSection("ConnectionStrings");
             services.AddEntityFrameworkSqlServer()
                 .AddDbContext<ToDoContext>(options => options.UseSqlServer(connectionStringsSection["DefaultConnection"]));
-
 
 
             //Configure JWT Auth
@@ -82,7 +82,7 @@ namespace Reminder.Api
             services.AddTransient<IToDoService, ToDoService>();
             services.AddScoped<IUserService, UserService>();
             services.AddTransient<IGroupService, GroupService>();
-
+            
             services.AddMvc().SetCompatibilityVersion(CompatibilityVersion.Version_2_1);
         }
 
@@ -99,6 +99,7 @@ namespace Reminder.Api
             }
 
             app.UseHttpsRedirection();
+            app.UseAuthentication();
             app.UseMvc();
         }
     }
