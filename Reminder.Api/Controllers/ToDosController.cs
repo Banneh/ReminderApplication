@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Reminder.BusinessLogicLayer.Services;
 using Reminder.DataAccessLayer.DataModels;
@@ -20,6 +21,7 @@ namespace Reminder.Api.Controllers
         }
         // GET api/values
         [HttpGet]
+        [Authorize]
         public IActionResult Get()
         {
             return Ok(_toDoService.Get());
@@ -69,7 +71,7 @@ namespace Reminder.Api.Controllers
 
         // PUT api/values/5
         [HttpPut("{id}")]
-        public ActionResult Put(long id, [FromBody] ToDo value)
+        public IActionResult Put(long id, [FromBody] ToDo value)
         {
             if (!ModelState.IsValid)
                 return BadRequest();

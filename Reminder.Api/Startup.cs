@@ -18,6 +18,7 @@ using AutoMapper;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.Mvc.Authorization;
 using Microsoft.IdentityModel.Tokens;
+using Reminder.Api.Helpers;
 using Reminder.DataAccessLayer.DAL;
 
 namespace Reminder.Api
@@ -35,14 +36,20 @@ namespace Reminder.Api
         // This method gets called by the runtime. Use this method to add services to the container.
         public void ConfigureServices(IServiceCollection services)
         {
+            //Strongly typed app settings
+            var appSettingsSection = Configuration.GetSection("AppSettings");
+            services.Configure<AppSettings>(appSettingsSection);
+
+            var appSettings = appSettingsSection.Get<AppSettings>();
+
             //Configure DB Connection
-            var connectionStringsSection = Configuration.GetSection("ConnectionStrings");
+
             services.AddEntityFrameworkSqlServer()
-                .AddDbContext<ToDoContext>(options => options.UseSqlServer(connectionStringsSection["DefaultConnection"]));
+                .AddDbContext<ToDoContext>(options => options.UseSqlServer(appSettings.DbConnectionString));
 
 
             //Configure JWT Auth
-            byte[] secret = Encoding.ASCII.GetBytes("TEST");
+            byte[] secret = Encoding.ASCII.GetBytes(appSettings.Secret);
             services.AddAuthentication(x =>
                 {
                     x.DefaultAuthenticateScheme = JwtBearerDefaults.AuthenticationScheme;

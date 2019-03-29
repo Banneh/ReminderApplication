@@ -1,10 +1,5 @@
-﻿using System;
+﻿using Reminder.DataAccessLayer.DataModels;
 using System.Collections.Generic;
-using System.Dynamic;
-using System.Linq;
-using System.Text;
-using Reminder.DataAccessLayer.DataModels;
-using Reminder.DataAccessLayer.DAL;
 
 namespace Reminder.BusinessLogicLayer.Services
 {

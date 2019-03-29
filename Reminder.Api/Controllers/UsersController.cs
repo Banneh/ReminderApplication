@@ -1,18 +1,16 @@
-﻿using System;
-using System.Collections.Generic;
-using System.IdentityModel.Tokens.Jwt;
-using System.Linq;
-using System.Security.Claims;
-using System.Text;
-using System.Threading.Tasks;
-using AutoMapper;
+﻿using AutoMapper;
 using Contracts.Dto;
 using Microsoft.AspNetCore.Authorization;
-using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.IdentityModel.Tokens;
 using Reminder.BusinessLogicLayer.Services;
 using Reminder.DataAccessLayer.DataModels;
+using System;
+using System.IdentityModel.Tokens.Jwt;
+using System.Security.Claims;
+using System.Text;
+using Microsoft.Extensions.Options;
+using Reminder.Api.Helpers;
 
 namespace Reminder.Api.Controllers
 {
@@ -23,12 +21,13 @@ namespace Reminder.Api.Controllers
     {
         private IUserService _userService;
         private IMapper _mapper;
-        private readonly string secret = "TEasdasdasdsadasdsafhsdfgaffdfaerfaST";
+        private readonly AppSettings _appSettings;
 
-        public UsersController(IUserService userService, IMapper mapper)
+        public UsersController(IUserService userService, IMapper mapper, IOptions<AppSettings> appSettings)
         {
             _userService = userService;
             _mapper = mapper;
+            _appSettings = appSettings.Value;
         }
 
         [AllowAnonymous]
@@ -37,8 +36,11 @@ namespace Reminder.Api.Controllers
         {
             User user = _userService.Authenticate(userDto.Username, userDto.Password);
 
+            if (user == null)
+                return BadRequest(new {message = "Username or password is incorrect."});
+
             var tokenHandler = new JwtSecurityTokenHandler();
-            var key = Encoding.ASCII.GetBytes(secret);
+            var key = Encoding.ASCII.GetBytes(_appSettings.Secret);
             var tokenDescriptor = new SecurityTokenDescriptor
             {
                 Subject = new ClaimsIdentity(new Claim[]
@@ -86,9 +88,7 @@ namespace Reminder.Api.Controllers
         public IActionResult GetById(long id)
         {
             User user = _userService.GetById(id);
-
             UserDto userToReturn = _mapper.Map<UserDto>(user);
-
             return Ok(userToReturn);
         }
 
@@ -96,7 +96,6 @@ namespace Reminder.Api.Controllers
         public IActionResult Delete(long id)
         {
             _userService.Delete(id);
-
             return Ok();
         }
     }
