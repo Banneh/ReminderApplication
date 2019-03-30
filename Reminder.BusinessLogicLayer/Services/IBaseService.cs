@@ -1,7 +1,5 @@
-﻿using System;
+﻿using Reminder.DataAccessLayer.DAL;
 using System.Collections.Generic;
-using System.Text;
-using Reminder.DataAccessLayer.DAL;
 
 namespace Reminder.BusinessLogicLayer.Services
 {

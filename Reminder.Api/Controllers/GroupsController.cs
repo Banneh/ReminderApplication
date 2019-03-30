@@ -1,7 +1,11 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.ComponentModel.DataAnnotations;
 using System.Linq;
 using System.Threading.Tasks;
+using AutoMapper;
+using Contracts.Dto;
+using Microsoft.AspNetCore.Hosting.Internal;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Reminder.BusinessLogicLayer.Services;
@@ -15,21 +19,25 @@ namespace Reminder.Api.Controllers
     {
 
         private readonly IGroupService _groupService;
+        private IMapper _mapper;
 
-        public GroupsController(IGroupService groupService)
+        public GroupsController(IGroupService groupService, IMapper mapper)
         {
+            _mapper = mapper;
             _groupService = groupService;
         }
 
         [HttpGet]
         public IActionResult Get()
         {
-            IEnumerable<Group> groupsToReturn = _groupService.Get();
+            IEnumerable<Group> groups = _groupService.Get();
 
-            if (groupsToReturn == null)
+            if (groups == null)
             {
                 return NotFound();
             }
+
+            IEnumerable<GroupDto> groupsToReturn = _mapper.Map<IEnumerable<GroupDto>>(groups);
 
             return Ok(groupsToReturn);
         }
@@ -37,32 +45,35 @@ namespace Reminder.Api.Controllers
         [HttpGet("{id}")]
         public IActionResult Get(long id)
         {
-            Group groupToReturn = _groupService.GetById(id);
+            Group group = _groupService.GetById(id);
 
-            if (groupToReturn == null)
+            if (group == null)
             {
                 return NotFound();
             }
+
+            GroupDto groupToReturn = _mapper.Map<GroupDto>(group);
 
             return Ok(groupToReturn);
         }
 
         [HttpPost]
-        public IActionResult Post([FromBody] Group group)
+        public IActionResult Post([FromBody] GroupDto groupDto)
         {
-            if (!ModelState.IsValid)
-            {
-                return BadRequest();
-            }
+            Group group = _mapper.Map<Group>(groupDto);
 
             _groupService.Add(group);
 
-            return Ok(group);
+            groupDto = _mapper.Map<GroupDto>(group);
+
+            return Ok(groupDto);
         }
 
         [HttpPut("{id}")]
-        public IActionResult Put(long id, [FromBody] Group group)
+        public IActionResult Put(long id, [FromBody] GroupDto groupDto)
         {
+            Group group = _mapper.Map<Group>(groupDto);
+
             if (!ModelState.IsValid)
             {
                 return BadRequest();
@@ -70,7 +81,9 @@ namespace Reminder.Api.Controllers
 
             _groupService.Update(id, group);
 
-            return Ok(group);
+            groupDto = _mapper.Map<GroupDto>(group);
+
+            return Ok(groupDto);
         }
 
         [HttpDelete]
