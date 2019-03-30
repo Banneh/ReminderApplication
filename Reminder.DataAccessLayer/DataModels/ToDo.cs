@@ -13,6 +13,7 @@ namespace Reminder.DataAccessLayer.DataModels
         [Required(AllowEmptyStrings = false)]
         public string Name { get; set; }
         public string Description { get; set; }
+        [Required]
         public DateTime Created { get; set; }
         public DateTime? DueDate { get; set; }
         public bool IsDone { get; set; }

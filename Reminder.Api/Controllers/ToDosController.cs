@@ -2,6 +2,8 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using AutoMapper;
+using Contracts.Dto;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Reminder.BusinessLogicLayer.Services;
@@ -14,20 +16,25 @@ namespace Reminder.Api.Controllers
     public class ToDosController : ControllerBase
     {
         private readonly IToDoService _toDoService;
+        private IMapper _mapper;
 
-        public ToDosController(IToDoService toDoService)
+        public ToDosController(IToDoService toDoService, IMapper mapper)
         {
+            _mapper = mapper;
             _toDoService = toDoService;
         }
-        // GET api/values
+
         [HttpGet]
         [Authorize]
         public IActionResult Get()
         {
-            return Ok(_toDoService.Get());
+            IEnumerable <ToDo> toDos = _toDoService.Get();
+
+            IEnumerable<ToDoDto> toDosToReturn = _mapper.Map<IEnumerable<ToDoDto>>(toDos);
+
+            return Ok(toDosToReturn);
         }
 
-        // GET api/values/5
         [HttpGet("{id}")]
         public IActionResult Get(long id)
         {
@@ -40,44 +47,53 @@ namespace Reminder.Api.Controllers
                 return NotFound();
             }
 
-            return Ok(toDo);
+            ToDoDto toDoDto = _mapper.Map<ToDoDto>(toDo);
+
+            return Ok(toDoDto);
 
         }
 
         
-        [HttpGet("group/{groupid}")]
+        [HttpGet("group/{groupId}")]
         public IActionResult GetByGroup(long groupId)
         {
-            IEnumerable<ToDo> toDosByGroup = _toDoService.GetByGroup(groupId);
+            IEnumerable<ToDo> toDos = _toDoService.GetByGroup(groupId);
 
-            if (toDosByGroup == null)
+            if (toDos == null)
             {
                 return NotFound();
             }
 
-            return Ok(toDosByGroup);
+            IEnumerable<ToDoDto> toDosToReturn = _mapper.Map<IEnumerable<ToDoDto>>(toDos);
+
+            return Ok(toDosToReturn);
         }
 
         // POST api/values
         [HttpPost]
-        public IActionResult Post([FromBody] ToDo toDo)
+        public IActionResult Post([FromBody] ToDoDto toDo)
         {
-            if (!ModelState.IsValid)
-                return BadRequest();
+            ToDo toAdd = _mapper.Map<ToDo>(toDo);
 
-            _toDoService.Add(toDo);
+            _toDoService.Add(toAdd);
+
+            toDo = _mapper.Map<ToDoDto>(toAdd);
+
             return Ok(toDo.ToDoId);
         }
 
         // PUT api/values/5
         [HttpPut("{id}")]
-        public IActionResult Put(long id, [FromBody] ToDo value)
+        public IActionResult Put(long id, [FromBody] ToDoDto value)
         {
-            if (!ModelState.IsValid)
-                return BadRequest();
 
-            _toDoService.Update(id, value);
-            return Ok(value.ToDoId);
+            ToDo toUpdate = _mapper.Map<ToDo>(value);
+
+            _toDoService.Update(id, toUpdate);
+
+            value = _mapper.Map<ToDoDto>(toUpdate);
+
+            return Ok(value);
         }
 
         
@@ -85,6 +101,7 @@ namespace Reminder.Api.Controllers
         public IActionResult Delete(long id)
         {
             ToDo toDelete =_toDoService.GetById(id);
+
             _toDoService.Delete(toDelete);
             
             return Ok();
